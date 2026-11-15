@@ -1,0 +1,71 @@
+name: test-build-release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # Release used for pushes to main / manual runs; tag pushes use the tag name.
+  DEFAULT_VERSION: v1.0.0
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Vet
+        run: go vet ./...
+      - name: Build
+        run: go build -o lfind .
+      - name: Tests (no root; daemon uses inotify)
+        run: sh ./test.sh
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Resolve version
+        id: v
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then v="${GITHUB_REF_NAME}"; else v="${DEFAULT_VERSION}"; fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+      - name: Cross-build static binaries
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          set -eu
+          mkdir -p dist
+          for arch in amd64 arm64; do
+            name="lfind-${VERSION}-linux-${arch}"
+            mkdir -p "dist/${name}"
+            CGO_ENABLED=0 GOOS=linux GOARCH="${arch}" \
+              go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o "dist/${name}/lfind" .
+            cp README.md LICENSE lfind.service "dist/${name}/"
+            tar -C dist -czf "dist/${name}.tar.gz" "${name}"
+          done
+          (cd dist && sha256sum *.tar.gz > SHA256SUMS)
+          cat dist/SHA256SUMS
+      - name: Publish GitHub Release (idempotent)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          set -eu
+          if ! gh release view "${VERSION}" >/dev/null 2>&1; then
+            gh release create "${VERSION}" --target "${GITHUB_SHA}" --title "lfind ${VERSION}" \
+              --notes "Static Linux binaries (amd64, arm64) built from ${GITHUB_SHA}. Verify with SHA256SUMS. See README.md for install and usage."
+          fi
+          gh release upload "${VERSION}" dist/*.tar.gz dist/SHA256SUMS --clobber
+          gh release view "${VERSION}"
