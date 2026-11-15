@@ -1,0 +1,14 @@
+# binaries / build output
+/lfind
+/dist/
+*.tar.gz
+# index caches and runtime files
+*.db
+*.db.tmp
+*.sock
+*.log
+# editor / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
