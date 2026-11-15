@@ -1,0 +1,10 @@
+[Unit]
+Description=lfind filename index daemon (fanotify live updates)
+
+[Service]
+ExecStart=/usr/local/bin/lfind daemon
+Restart=on-failure
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

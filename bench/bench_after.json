@@ -1,0 +1,87 @@
+{
+ "label": "after",
+ "index_cold_s": 1.999,
+ "index_out": "indexed /: entries=1596254 dirs=46978 files=1549276 delta=0 dead=0 exact_names=547343 meta=true index_mem=86.4MB (54.1 B/entry) root=/\nscan 1.908s, save 36ms, cache /tmp/lfbench-after.db (86.4 MB)",
+ "index_warm_ms": 748.0956270010211,
+ "index_warm_nometa_ms": 500.80121499922825,
+ "cache_bytes": 86353249,
+ "cache_load_ms": 0.538,
+ "daemon_rss_mb": 92.2,
+ "daemon_stats": "daemon: OK entries=1596261 dirs=46980 files=1549281 delta=5 dead=4 exact_names=547343 meta=true index_mem=86.4MB (54.1 B/entry) root=/ events=32 rescanning=false rss=92.4MB",
+ "entries": 1596254,
+ "daemon_bytes_per_entry": 60.5,
+ "queries": [
+  {
+   "query": "a (very broad)",
+   "matches": 1111876,
+   "daemon_search_ms": 7.371,
+   "cli_count_ms": 9.364014000311727,
+   "cli_first100_ms": 8.81989700064878,
+   "cli_nodaemon_ms": 5.736229999456555
+  },
+  {
+   "query": "report",
+   "matches": 95461,
+   "daemon_search_ms": 2.35,
+   "cli_count_ms": 5.60688300174661,
+   "cli_first100_ms": 5.39769500028342,
+   "cli_nodaemon_ms": 5.144659997313283
+  },
+  {
+   "query": "thesis jakarta",
+   "matches": 3085,
+   "daemon_search_ms": 1.664,
+   "cli_count_ms": 3.764369997952599,
+   "cli_first100_ms": 4.162613997323206,
+   "cli_nodaemon_ms": 4.838675999053521
+  },
+  {
+   "query": "*.mp4",
+   "matches": 79618,
+   "daemon_search_ms": 4.262,
+   "cli_count_ms": 6.805033997807186,
+   "cli_first100_ms": 6.796813999244478,
+   "cli_nodaemon_ms": 7.887534000474261
+  },
+  {
+   "query": "ext:pdf laporan",
+   "matches": 5275,
+   "daemon_search_ms": 2.1,
+   "cli_count_ms": 4.388376997667365,
+   "cli_first100_ms": 4.811449998669559,
+   "cli_nodaemon_ms": 5.4515599986189045
+  },
+  {
+   "query": "libc.so",
+   "matches": 3,
+   "daemon_search_ms": 1.522,
+   "cli_count_ms": 3.9633080014027655,
+   "cli_first100_ms": 4.012687997601461,
+   "cli_nodaemon_ms": 4.6753850001550745
+  },
+  {
+   "query": "zzqqxx (none)",
+   "matches": 0,
+   "daemon_search_ms": 0.475,
+   "cli_count_ms": 3.1267509984900244,
+   "cli_first100_ms": 2.9731210015597753,
+   "cli_nodaemon_ms": 3.8328419977915473
+  },
+  {
+   "query": "regex ^main_.*\\.go$",
+   "matches": 2750,
+   "daemon_search_ms": 11.049,
+   "cli_count_ms": 14.241490000131307,
+   "cli_first100_ms": 14.514430997223826,
+   "cli_nodaemon_ms": 15.185419000772526
+  }
+ ],
+ "sorted_first100_ms": {
+  "name": 5.911915999604389,
+  "size": 6.494119003036758,
+  "dm": 6.148894000943983,
+  "path": 20.156253001914592
+ },
+ "typing_per_keystroke_ms_median": 5.37466149944521,
+ "typing_per_keystroke_ms_max": 9.647060000133933
+}
